@@ -1,2 +1,2 @@
 # PaimanVim
-My personal Neovim configuration
+My personal Neovim configuration. 
