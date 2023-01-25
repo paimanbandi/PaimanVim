@@ -18,22 +18,27 @@ require('packer').startup(function(use)
 
   use({
     "jackMort/ChatGPT.nvim",
-      config = function()
-        require("chatgpt").setup({
-        })
-      end,
-      requires = {
-        "MunifTanjim/nui.nvim",
-        "nvim-lua/plenary.nvim",
-      }
+    config = function()
+      require("chatgpt").setup({
+      })
+    end,
+    requires = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+    }
   })
+
+  use { 'anuvyklack/pretty-fold.nvim',
+    config = function()
+      require('pretty-fold').setup()
+    end
+  }
 
   use {
     'neovim/nvim-lspconfig',
     requires = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
-
       'j-hui/fidget.nvim',
 
       'folke/neodev.nvim',
@@ -68,8 +73,11 @@ require('packer').startup(function(use)
   use 'tpope/vim-sleuth'
 
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
-
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+
+  use 'akinsho/flutter-tools.nvim'
+  use 'Nash0x7E2/awesome-flutter-snippets'
+  use 'dart-lang/dart-vim-plugin'
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
@@ -101,22 +109,16 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- [[ Setting options ]]
 
 vim.o.hlsearch = false
-
 vim.wo.number = true
-
 vim.o.mouse = 'a'
-
 vim.o.breakindent = true
-
 vim.o.undofile = true
-
 vim.o.ignorecase = true
 vim.o.smartcase = true
-
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
-
 vim.o.termguicolors = true
+
 vim.cmd [[colorscheme onedark]]
 
 vim.o.completeopt = 'menuone,noselect'
@@ -158,11 +160,15 @@ vim.keymap.set('n', '<leader>lg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>ld', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>')
+vim.keymap.set('n', '<leader>cg', ':ChatGPT<CR>')
 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>of', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+
+-- [[ Autocmd ]]
+vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]])
 
 -- [[ Highlight on yank ]]
 
@@ -411,4 +417,3 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
-
