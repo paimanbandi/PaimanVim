@@ -8,6 +8,7 @@ end
 
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
+  use "olimorris/onedarkpro.nvim"
 
   use {
     'nvim-tree/nvim-tree.lua',
@@ -15,6 +16,10 @@ require('packer').startup(function(use)
       'nvim-tree/nvim-web-devicons',
     },
   }
+
+  use('akinsho/toggleterm.nvim')
+
+  use('tveskag/nvim-blame-line')
 
   use({
     "jackMort/ChatGPT.nvim",
@@ -66,7 +71,6 @@ require('packer').startup(function(use)
   use 'tpope/vim-rhubarb'
   use 'lewis6991/gitsigns.nvim'
 
-  use 'navarasu/onedark.nvim'
   use 'nvim-lualine/lualine.nvim'
   use 'lukas-reineke/indent-blankline.nvim'
   use 'numToStr/Comment.nvim'
@@ -119,7 +123,7 @@ vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
 vim.o.termguicolors = true
 
-vim.cmd [[colorscheme onedark]]
+vim.cmd [[colorscheme onedark_vivid]]
 
 vim.o.completeopt = 'menuone,noselect'
 
@@ -206,10 +210,34 @@ require("nvim-tree").setup({
 
 -- [[ Setup Plugins ]]
 
+require("toggleterm").setup({
+  size = function(term)
+    if term.direction == "horizontal" then
+      return 20
+    elseif term.direction == "vertical" then
+      return vim.o.columns * 0.4
+    end
+  end,
+  open_mapping = [[\\]],
+  insert_mappings = false,
+  terminal_mappings = true,
+  -- on_open = fun(t: Terminal), -- function to run when the terminal opens
+  -- on_close = fun(t: Terminal), -- function to run when the terminal closes
+  hide_numbers = true,
+  shade_filetypes = {},
+  shade_terminals = true,
+  shading_factor = "1",
+  start_in_insert = true,
+  persist_size = true,
+  direction = "float",
+  close_on_exit = true,
+  shell = vim.o.shell,
+})
+
 require('lualine').setup {
   options = {
     icons_enabled = false,
-    theme = 'onedark',
+    theme = 'kanagawa',
     component_separators = '|',
     section_separators = '',
   },
