@@ -1,5 +1,6 @@
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 local is_bootstrap = false
+
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   is_bootstrap = true
   vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
@@ -32,12 +33,6 @@ require('packer').startup(function(use)
       "nvim-lua/plenary.nvim",
     }
   })
-
-  use { 'anuvyklack/pretty-fold.nvim',
-    config = function()
-      require('pretty-fold').setup()
-    end
-  }
 
   use {
     'neovim/nvim-lspconfig',
@@ -416,7 +411,9 @@ cmp.setup {
   mapping = cmp.mapping.preset.insert {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
+    ["<C-Space>"] = cmp.mapping(cmp.mapping.complete({
+      reason = cmp.ContextReason.Auto,
+    }), { "i", "c" }),
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
