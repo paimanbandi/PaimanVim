@@ -45,11 +45,19 @@ require('packer').startup(function(use)
     },
   }
 
+  use({ 'glepnir/lspsaga.nvim', branch = 'main' })
+
   use {
     'hrsh7th/nvim-cmp',
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   }
 
+  use({
+    "Pocco81/auto-save.nvim",
+    config = function()
+      require("auto-save").setup {}
+    end,
+  })
   use {
     'nvim-treesitter/nvim-treesitter',
     run = function()
@@ -185,6 +193,7 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.opt.termguicolors = true
 
+-- [[ Setup Plugins ]]
 require("nvim-tree").setup({
   sort_by = "case_sensitive",
   view = {
@@ -202,8 +211,6 @@ require("nvim-tree").setup({
     dotfiles = true,
   },
 })
-
--- [[ Setup Plugins ]]
 
 require("toggleterm").setup({
   size = function(term)
@@ -232,7 +239,7 @@ require("toggleterm").setup({
 require('lualine').setup {
   options = {
     icons_enabled = false,
-    theme = 'kanagawa',
+    theme = 'auto',
     component_separators = '|',
     section_separators = '',
   },
@@ -327,6 +334,10 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
+require("lspsaga").setup({
+  vim.keymap.set({ "n", "v" }, "<leader>ca", "<cmd>Lspsaga code_action<CR>")
+})
+
 -- LSP settings.
 local on_attach = function(_, bufnr)
   local nmap = function(keys, func, desc)
@@ -338,7 +349,8 @@ local on_attach = function(_, bufnr)
   end
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+
+  vim.keymap.set("n", "gh", "<cmd>Lspsaga lsp_finder<CR>")
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -441,4 +453,5 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
   },
+}
 }
