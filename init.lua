@@ -165,7 +165,9 @@ end, { desc = '[/] Fuzzily search in current buffer]' })
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>ht', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>gs', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>lg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>lg', require('telescope.builtin').live_grep,
+  { desc = '[S]earch by [G]rep' })
+
 vim.keymap.set('n', '<leader>ld', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>')
@@ -263,18 +265,6 @@ for _, ls in ipairs(language_servers) do
   })
 end
 require('ufo').setup()
---
-
--- Option 3: treesitter as a main provider instead
--- Only depend on `nvim-treesitter/queries/filetype/folds.scm`,
--- performance and stability are better than `foldmethod=nvim_treesitter#foldexpr()`
--- use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
--- require('ufo').setup({
---   provider_selector = function(bufnr, filetype, buftype)
---     return { 'treesitter', 'indent' }
---   end
--- })
---
 
 require('lualine').setup {
   options = {
@@ -418,12 +408,12 @@ local servers = {
   -- rust_analyzer = {},
   -- tsserver = {},
 
-  sumneko_lua = {
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-    },
-  },
+  -- sumneko_lua = {
+  --   Lua = {
+  --     workspace = { checkThirdParty = false },
+  --     telemetry = { enable = false },
+  --   },
+  -- },
 }
 
 require('neodev').setup()
