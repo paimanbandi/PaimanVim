@@ -54,6 +54,8 @@ require('packer').startup(function(use)
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   }
 
+  use 'mfussenegger/nvim-dap'
+
   use({
     "Pocco81/auto-save.nvim",
     config = function()
@@ -87,6 +89,9 @@ require('packer').startup(function(use)
   use 'akinsho/flutter-tools.nvim'
   use 'Nash0x7E2/awesome-flutter-snippets'
   use 'dart-lang/dart-vim-plugin'
+
+  use 'natebosch/vim-lsc'
+  use 'natebosch/vim-lsc-dart'
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
@@ -178,7 +183,12 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>of', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
+vim.keymap.set('n', '<leader>tb', ':ToggleBlameLine<CR>')
+
+
 -- [[ Autocmd ]]
+vim.cmd([[autocmd BufEnter * EnableBlameLine]])
+
 vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]])
 
 -- [[ Highlight on yank ]]
@@ -245,13 +255,9 @@ vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decr
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
--- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
 vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
 
--- Option 2: nvim lsp as LSP client
--- Tell the server the capability of foldingRange,
--- Neovim hasn't added foldingRange to default capabilities, users must add it manually
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
@@ -385,7 +391,7 @@ local on_attach = function(_, bufnr)
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-  nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+  nmap('<leader>td', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
@@ -484,3 +490,46 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+require("flutter-tools").setup {
+
+  debugger = {
+    enabled = true,
+    run_via_dap = true,
+    exception_breakpoints = {},
+    register_configurations = function(_)
+      require("dap").configurations.dart = {}
+      require("dap.ext.vscode").load_launchjs()
+    end,
+  }
+}
+
+local dap = require('dap')
+
+dap.adapters.dart = {
+  type = "executable",
+  command = "dart",
+  -- This command was introduced upstream in https://github.com/dart-lang/sdk/commit/b68ccc9a
+  args = { "debug_adapter" }
+}
+dap.configurations.dart = {
+  {
+    type = "dart",
+    request = "launch",
+    name = "Launch Dart Program",
+    -- The nvim-dap plugin populates this variable with the filename of the current buffer
+    program = "${file}",
+    -- The nvim-dap plugin populates this variable with the editor's current working directory
+    cwd = "${workspaceFolder}",
+    args = { "--help" }, -- Note for Dart apps this is args, for Flutter apps toolArgs
+  }
+}
+
+vim.fn.sign_define('DapBreakpoint', { text = '🟥', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapStopped', { text = '▶️', texthl = '', linehl = '', numhl = '' })
+
+vim.api.nvim_set_keymap("n", "<leader>b", "<Cmd>lua require'dap'.toggle_breakpoint()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<F5>", "<Cmd>lua require'dap'.continue()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<F10>", "<Cmd>lua require'dap'.step_over()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<F11>", "<Cmd>lua require'dap'.step_into()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<F12>", "<Cmd>lua require'dap'.step_out()<CR>", { noremap = true })
