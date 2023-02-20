@@ -48,12 +48,6 @@ require('lazy').setup({
   { 'mfussenegger/nvim-dap' },
 
   {
-    'Pocco81/auto-save.nvim',
-    config = function()
-      require("auto-save").setup {}
-    end,
-  },
-  {
     'nvim-treesitter/nvim-treesitter',
     build = function()
       pcall(require('nvim-treesitter.install').update { with_sync = true })
@@ -134,13 +128,13 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer]' })
 
-vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>ht', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>gs', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>lg', require('telescope.builtin').live_grep,
+vim.keymap.set('n', '<leader>f', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>h', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>w', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
+vim.keymap.set('n', '<leader>g', require('telescope.builtin').live_grep,
   { desc = '[S]earch by [G]rep' })
 
-vim.keymap.set('n', '<leader>ld', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>d', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>')
 vim.keymap.set('n', '<leader>cg', ':ChatGPT<CR>')
@@ -150,7 +144,7 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>of', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
-vim.keymap.set('n', '<leader>tb', ':ToggleBlameLine<CR>')
+vim.keymap.set('n', '<leader>l', ':ToggleBlameLine<CR>')
 
 
 -- [[ Autocmd ]]
@@ -341,7 +335,7 @@ require("lspsaga").setup({
   vim.keymap.set({ "n", "v" }, "<leader>ca", "<cmd>Lspsaga code_action<CR>")
 })
 
--- LSP settings.
+-- LSP Settigs
 local on_attach = function(_, bufnr)
   local nmap = function(keys, func, desc)
     if desc then

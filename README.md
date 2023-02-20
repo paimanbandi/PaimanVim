@@ -20,7 +20,8 @@ vim.g.mapleader = ' '
 
 | Mode           	| Keymap          	| Action                       	|
 |----------------	|-----------------	|------------------------------	|
-| Normal         	| <leader>tb      	| Toggle Blame Line            	|
+| Normal         	| \\ 		     	| Toggle Term			|            
+| Normal         	| <leader>l      	| Toggle Blame Line		|            
 | Normal         	| <leader>e       	| Toggle Nvim Tree             	|
 | Normal         	| <leader>cg      	| Open ChatGPT                 	|
 | Normal         	| zR              	| Open All Folds               	|
@@ -33,7 +34,11 @@ vim.g.mapleader = ' '
 | Normal         	| K               	| Hover Documentation          	|
 | Normal         	| <leader>?       	| Find Recently Opened Files   	|
 | Normal         	| <leader><space> 	| Find Existing Buffers        	|
-| Normal         	| <leader>ff      	| Find Files                   	|
+| Normal         	| <leader>f      	| Find Files                   	|
+| Normal         	| <leader>g      	| Live Grep                   	|
+| Normal         	| <leader>h      	| Search Help			|
+| Normal         	| <leader>w      	| Search Current Word           |
+| Normal         	| <leader>d      	| Search Diagnostics            |
 | Insert         	| hh              	| Escape                       	|
 | Insert         	| HH              	| Escape                       	|
 | Visual         	| J               	| Move selected text to bottom 	|
