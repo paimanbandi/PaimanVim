@@ -1,6 +1,6 @@
 # PaimanVim
 
-My personal Neovim configuration. 
+My personal Neovim configuration. I use to code Flutter, TypeScript, and Rust.
 
 ## Requirements
 
