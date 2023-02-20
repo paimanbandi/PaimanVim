@@ -30,17 +30,24 @@ vim.g.mapleader = ' '
 | Normal         	| za              	| Close Fold                   	|
 | Normal         	| <leader>b       	| Toggle Breakpoint            	|
 | Normal         	| <F5>            	| Continue                     	|
+| Normal         	| <F10>            	| Step Over			|
+| Normal         	| <F11>            	| Step Into			|
+| Normal         	| <F12>            	| Step Out			|
 | Normal         	| J               	| Remove row below             	|
 | Normal         	| K               	| Hover Documentation          	|
+| Normal         	| <C-k>               	| Signature Documentation     	|
 | Normal         	| <leader>?       	| Find Recently Opened Files   	|
 | Normal         	| <leader><space> 	| Find Existing Buffers        	|
 | Normal         	| <leader>f      	| Find Files                   	|
 | Normal         	| <leader>g      	| Live Grep                   	|
 | Normal         	| <leader>h      	| Search Help			|
-| Normal         	| <leader>w      	| Search Current Word           |
+| Normal         	| <leader>w      	| Search in Current File        |
 | Normal         	| <leader>d      	| Search Diagnostics            |
-| Insert         	| hh              	| Escape                       	|
-| Insert         	| HH              	| Escape                       	|
+| Normal         	| gd		      	| Go to Definition		|
+| Normal         	| gr		      	| Go to Reference		|
+| Normal         	| gi		 	| Go to Implementation 		|
+| Insert, Visual     	| hh              	| Escape                       	|
+| Insert, Visual      	| HH              	| Escape                       	|
 | Visual         	| J               	| Move selected text to bottom 	|
 | Visual         	| K               	| Move selected text to above  	|
 | Normal, Visual 	| <leader>ca      	| Code Action                  	|
