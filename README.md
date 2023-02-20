@@ -1,6 +1,6 @@
 # PaimanVim
 
-My personal Neovim configuration. I use to code Flutter, TypeScript, and Rust.
+This is my PDE (Personalized Development Environment). I use to code Flutter, TypeScript, Rust and V.
 
 ## Requirements
 
@@ -14,9 +14,7 @@ My personal Neovim configuration. I use to code Flutter, TypeScript, and Rust.
 
 ## Keymaps
 
-```lua
-vim.g.mapleader = ' '
-```
+I use <space> for the <leader> key.
 
 | Mode           	| Keymap          	| Action                       	|
 |----------------	|-----------------	|------------------------------	|
