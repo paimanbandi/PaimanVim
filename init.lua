@@ -90,6 +90,8 @@ require('packer').startup(function(use)
   use 'Nash0x7E2/awesome-flutter-snippets'
   use 'dart-lang/dart-vim-plugin'
 
+  use("jose-elias-alvarez/typescript.nvim")
+
   use 'natebosch/vim-lsc'
   use 'natebosch/vim-lsc-dart'
 
