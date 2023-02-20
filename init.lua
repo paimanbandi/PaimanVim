@@ -1,125 +1,90 @@
-local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
-local is_bootstrap = false
-
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  is_bootstrap = true
-  vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
-  vim.cmd [[packadd packer.nvim]]
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
-require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
-  use "olimorris/onedarkpro.nvim"
+require('lazy').setup({
+  { 'olimorris/onedarkpro.nvim' },
 
-  use {
+  {
     'nvim-tree/nvim-tree.lua',
-    requires = {
+    dependencies = {
       'nvim-tree/nvim-web-devicons',
     },
-  }
+  },
 
-  use('akinsho/toggleterm.nvim')
+  { 'akinsho/toggleterm.nvim' },
 
-  use { 'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async' }
+  { 'kevinhwang91/nvim-ufo', dependencies = 'kevinhwang91/promise-async' },
 
-  use('tveskag/nvim-blame-line')
+  { 'tveskag/nvim-blame-line' },
 
-  use({
-    "jackMort/ChatGPT.nvim",
-    config = function()
-      require("chatgpt").setup({
-      })
-    end,
-    requires = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-    }
-  })
-
-  use {
+  {
     'neovim/nvim-lspconfig',
-    requires = {
+    dependencies = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       'j-hui/fidget.nvim',
 
       'folke/neodev.nvim',
     },
-  }
+  },
 
-  use({ 'glepnir/lspsaga.nvim', branch = 'main' })
+  { 'glepnir/lspsaga.nvim', branch = 'main' },
 
-  use {
+  {
     'hrsh7th/nvim-cmp',
-    requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
-  }
+    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+  },
 
-  use 'mfussenegger/nvim-dap'
+  { 'mfussenegger/nvim-dap' },
 
-  use({
-    "Pocco81/auto-save.nvim",
+  {
+    'Pocco81/auto-save.nvim',
     config = function()
       require("auto-save").setup {}
     end,
-  })
-  use {
+  },
+  {
     'nvim-treesitter/nvim-treesitter',
-    run = function()
+    build = function()
       pcall(require('nvim-treesitter.install').update { with_sync = true })
     end,
-  }
+  },
 
-  use {
+  {
     'nvim-treesitter/nvim-treesitter-textobjects',
-    after = 'nvim-treesitter',
-  }
+    dependencies = 'nvim-treesitter',
+  },
 
-  use 'tpope/vim-fugitive'
-  use 'tpope/vim-rhubarb'
-  use 'lewis6991/gitsigns.nvim'
+  { 'tpope/vim-fugitive' },
+  { 'tpope/vim-rhubarb' },
+  { 'lewis6991/gitsigns.nvim' },
 
-  use 'nvim-lualine/lualine.nvim'
-  use 'lukas-reineke/indent-blankline.nvim'
-  use 'numToStr/Comment.nvim'
-  use 'tpope/vim-sleuth'
+  { 'nvim-lualine/lualine.nvim' },
+  { 'lukas-reineke/indent-blankline.nvim' },
+  { 'numToStr/Comment.nvim' },
+  { 'tpope/vim-sleuth' },
 
-  use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
-  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+  { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
+  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', cond = vim.fn.executable 'make' == 1 },
 
-  use 'akinsho/flutter-tools.nvim'
-  use 'Nash0x7E2/awesome-flutter-snippets'
-  use 'dart-lang/dart-vim-plugin'
+  { 'akinsho/flutter-tools.nvim' },
+  { 'Nash0x7E2/awesome-flutter-snippets' },
+  { 'dart-lang/dart-vim-plugin' },
 
-  use("jose-elias-alvarez/typescript.nvim")
+  { 'jose-elias-alvarez/typescript.nvim' },
 
-  use 'natebosch/vim-lsc'
-  use 'natebosch/vim-lsc-dart'
-
-  -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
-  local has_plugins, plugins = pcall(require, 'custom.plugins')
-  if has_plugins then
-    plugins(use)
-  end
-
-  if is_bootstrap then
-    require('packer').sync()
-  end
-end)
-
-if is_bootstrap then
-  print '=================================='
-  print '    Plugins are being installed'
-  print '    Wait until Packer completes,'
-  print '       then restart nvim'
-  print '=================================='
-  return
-end
-
-local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePost', {
-  command = 'source <afile> | silent! LspStop | silent! LspStart | PackerCompile',
-  group = packer_group,
-  pattern = vim.fn.expand '$MYVIMRC',
+  { 'natebosch/vim-lsc' },
+  { 'natebosch/vim-lsc-dart' },
 })
 
 -- [[ Setting options ]]
@@ -413,8 +378,8 @@ local on_attach = function(_, bufnr)
 end
 
 local servers = {
-  -- rust_analyzer = {},
-  -- tsserver = {},
+  rust_analyzer = {},
+  tsserver = {},
 
   -- sumneko_lua = {
   --   Lua = {
@@ -426,8 +391,8 @@ local servers = {
 
 require('neodev').setup()
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 require('mason').setup()
 
