@@ -22,8 +22,8 @@ I use <space> for the <leader> key.
 | Normal         	| <leader>l      	| Toggle Blame Line		|            
 | Normal         	| <leader>e       	| Toggle Nvim Tree             	|
 | Normal         	| <leader>cg      	| Open ChatGPT                 	|
-| Normal         	| zR              	| Open All Folds               	|
-| Normal         	| zM              	| Close All Folds              	|
+| Normal         	| zu              	| Open All Folds               	|
+| Normal         	| ze              	| Close All Folds              	|
 | Normal         	| zo              	| Open Fold                    	|
 | Normal         	| za              	| Close Fold                   	|
 | Normal         	| <leader>b       	| Toggle Breakpoint            	|

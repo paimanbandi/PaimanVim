@@ -137,7 +137,7 @@ vim.keymap.set('n', '<leader>g', require('telescope.builtin').live_grep,
   { desc = '[S]earch by [G]rep' })
 
 vim.keymap.set('n', '<leader>d', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-
+vim.keymap.set('n', '<leader>k', '<cmd>Lspsaga show_line_diagnostics<CR>')
 vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>')
 vim.keymap.set('n', '<leader>cg', ':ChatGPT<CR>')
 
@@ -218,8 +218,8 @@ vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decr
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
-vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+vim.keymap.set('n', 'zu', require('ufo').openAllFolds)
+vim.keymap.set('n', 'ze', require('ufo').closeAllFolds)
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.foldingRange = {
