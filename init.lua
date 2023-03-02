@@ -370,12 +370,12 @@ local servers = {
   rust_analyzer = {},
   tsserver = {},
 
-  -- sumneko_lua = {
-  --   Lua = {
-  --     workspace = { checkThirdParty = false },
-  --     telemetry = { enable = false },
-  --   },
-  -- },
+  lua_ls = {
+    Lua = {
+      workspace = { checkThirdParty = false },
+      telemetry = { enable = false },
+    },
+  },
 }
 
 require('neodev').setup()
